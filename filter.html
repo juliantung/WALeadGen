@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Filter</title>
+    <link rel="stylesheet" href="filterstyles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cross Reference Two Lists</h1>
+        <div>
+            <textarea id="input1" placeholder="Enter first CSV"></textarea>
+        </div>
+        <div>
+            <textarea id="input2" placeholder="Enter second CSV"></textarea>
+        </div>
+        <button onclick="findUnique()">Get Unique Numbers</button>
+        <div>
+            <h2>Unique Numbers:</h2>
+            <textarea id="output" readonly></textarea>
+        </div>
+        <button onclick="copyToClipboard()">Copy to Clipboard</button>
+    </div>
+    <script src="filterscript.js"></script>
+</body>
+</html>

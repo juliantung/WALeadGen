@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UK Phone Number Filter</title>
+    <link rel="stylesheet" href="ukstyles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>UK Phone Number Filter</h1>
+        <textarea id="textedInput" placeholder="Enter texted phone numbers..."></textarea>
+        <textarea id="untextedInput" placeholder="Paste unformatted data..."></textarea>
+        <button onclick="extractAndProcessNumbers()">Process Numbers</button>
+        <h2>Filtered Output:</h2>
+        <div id="output"></div>
+        <button id="copyButton" onclick="copyToClipboard()">Copy to Clipboard</button>
+        <button id="countUntextedButton" onclick="countUntexted()">Count Untexted</button>
+        <div id="untextedCount"></div>
+        <h2>Combined Texted Output:</h2>
+        <div id="combinedOutput"></div>
+        <button id="copyCombinedButton" onclick="copyCombinedToClipboard()">Copy Combined to Clipboard</button>
+        <button id="countTextedButton" onclick="countTexted()">Count Texted</button>
+        <div id="textedCount"></div>
+        
+
+    </div>
+    <script src="ukscript.js"></script>
+</body>
+</html>
