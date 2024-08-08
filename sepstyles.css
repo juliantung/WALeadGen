@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+.input-container, .output-container, .stats-container, .actions-container {
+    margin-bottom: 20px;
+}
+textarea {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 10px;
+}
+.output {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+.output .copy-btn, .output .done-btn, .output .undone-btn {
+    position: absolute;
+    top: 10px;
+}
+.output .copy-btn {
+    right: 110px;
+}
+.output .done-btn, .output .undone-btn {
+    right: 10px;
+}
+.output .undone-btn {
+    display: none;
+}
+.done .undone-btn {
+    display: inline;
+}
+.done .done-btn {
+    display: none;
+}
+.done {
+    background-color: #e0ffe0;
+}
+.actions-container textarea {
+    height: 100px;
+}
+
+

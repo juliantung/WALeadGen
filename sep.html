@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Separator</title>
+    <link rel="stylesheet" href="sepstyles.css">
+</head>
+<body>
+
+    <div class="input-container">
+        <textarea id="reviews-input" placeholder="Enter reviews here..."></textarea>
+        <input type="text" id="review-link" placeholder="Enter review link here...">
+        <button onclick="generateOutputs()">Generate Outputs</button>
+    </div>
+
+    <div class="stats-container">
+        <p>Total Reviews: <span id="total-reviews">0</span></p>
+        <p>Done: <span id="done-count">0</span></p>
+        <p>Undone: <span id="undone-count">0</span></p>
+    </div>
+
+    <div class="actions-container">
+        <button onclick="saveData()">Save Data</button>
+        <textarea id="data-output" placeholder="Copy this data..." readonly></textarea>
+        <textarea id="data-input" placeholder="Paste saved data here..."></textarea>
+        <button onclick="loadData()">Load Data</button>
+    </div>
+
+    <div class="output-container" id="output-container">
+    </div>
+
+    <script src="sepscript.js"></script>
+</body>
+</html>
+
