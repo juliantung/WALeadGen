@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Review Tracker</title>
+    <link rel="stylesheet" href="trackstyles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Company Review Tracker</h1>
+        <input type="text" id="search-box" onkeyup="searchCompanies()" placeholder="Search for companies..." class="search-box">
+        <div id="company-list" class="company-list">
+            <!-- Companies will be listed here -->
+        </div>
+        <div class="controls">
+            <button onclick="addCompany()" class="button primary">Add Company</button>
+            <button onclick="calculateDailyTotal()" class="button secondary">Calculate Daily Total</button>
+            <button onclick="copyDataToCSV(false)" class="button secondary">Copy Data to CSV</button>
+            <button onclick="copyDataToCSV(true)" class="button secondary">Copy Data to CSV with Daily Count Reset</button>
+        </div>
+        <div class="csv-controls">
+            <textarea id="csv-input" rows="5" placeholder="Paste CSV data here" class="textarea"></textarea>
+            <button onclick="loadDataFromCSV()" class="button secondary">Load Data from CSV</button>
+        </div>
+    </div>
+    <script src="trackscript.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
