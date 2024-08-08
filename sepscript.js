@@ -74,9 +74,13 @@ function saveData() {
         const review = output.getElementsByTagName('p')[1].textContent;
         const link = output.getElementsByTagName('a')[0].href;
         const done = output.classList.contains('done');
-        data.push({ review, link, done });
+        data.push({ 
+            review_text: review, 
+            review_link: link, 
+            review_status: done ? 'done' : 'not done' 
+        });
     }
-    const dataStr = JSON.stringify(data);
+    const dataStr = JSON.stringify(data, null, 4); // Format JSON with indentation
     copyToClipboard(dataStr);
 }
 
@@ -90,23 +94,23 @@ function loadData() {
         data.forEach((item, index) => {
             const outputDiv = document.createElement('div');
             outputDiv.className = 'output';
-            if (item.done) {
+            if (item.review_status === 'done') {
                 outputDiv.classList.add('done');
             }
             outputDiv.id = `output-${index}`;
 
             const linkElement = document.createElement('p');
-            linkElement.innerHTML = `Click: <a href="${item.link}" target="_blank">${item.link}</a>`;
+            linkElement.innerHTML = `Click: <a href="${item.review_link}" target="_blank">${item.review_link}</a>`;
             outputDiv.appendChild(linkElement);
 
             const reviewElement = document.createElement('p');
-            reviewElement.textContent = item.review;
+            reviewElement.textContent = item.review_text;
             outputDiv.appendChild(reviewElement);
 
             const copyButton = document.createElement('button');
             copyButton.className = 'copy-btn';
             copyButton.textContent = 'Copy';
-            copyButton.onclick = () => copyToClipboard(`Click: ${item.link}\n\n${item.review}`);
+            copyButton.onclick = () => copyToClipboard(`Click: ${item.review_link}\n\n${item.review_text}`);
             outputDiv.appendChild(copyButton);
 
             const doneButton = document.createElement('button');
