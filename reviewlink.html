@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Review Link Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 400px;
+            font-size: 16px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            word-wrap: break-word;
+            max-width: 400px;
+        }
+        .copied {
+            color: green;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Google Review Link Generator</h1>
+
+<label for="placeID">Enter Place ID:</label>
+<input type="text" id="placeID" placeholder="Enter the Google Place ID">
+
+<button onclick="generateLink()">Generate Link</button>
+
+<div id="resultContainer">
+    <p class="result" id="result"></p>
+    <button id="copyButton" onclick="copyToClipboard()">Copy to Clipboard</button>
+    <p class="copied" id="copiedText">Link copied to clipboard!</p>
+</div>
+
+<a href="https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder#maps_places_placeid_finder-javascript" target="_blank">Find Place ID here</a>
+
+<script>
+    function generateLink() {
+        const placeID = document.getElementById('placeID').value.trim();
+        if (placeID) {
+            const reviewLink = `https://search.google.com/local/writereview?placeid=${placeID}`;
+            document.getElementById('result').textContent = reviewLink;
+            document.getElementById('copyButton').style.display = 'inline-block';
+            document.getElementById('copiedText').style.display = 'none';
+        } else {
+            document.getElementById('result').textContent = '';
+            document.getElementById('copyButton').style.display = 'none';
+        }
+    }
+
+    function copyToClipboard() {
+        const link = document.getElementById('result').textContent;
+        navigator.clipboard.writeText(link).then(() => {
+            document.getElementById('copiedText').style.display = 'block';
+        });
+    }
+</script>
+
+</body>
+</html>
