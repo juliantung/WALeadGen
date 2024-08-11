@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFC Program Generator</title>
+    <link rel="stylesheet" href="codestyles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Enter the Links</h1>
+        <form id="linkForm">
+            <label for="instagramLink">Instagram Link:</label>
+            <input type="url" id="instagramLink" name="instagramLink" required>
+            <label for="whatsappLink">WhatsApp Link:</label>
+            <input type="url" id="whatsappLink" name="whatsappLink" required>
+            <label for="googleReviewLink">Google Review Link:</label>
+            <input type="url" id="googleReviewLink" name="googleReviewLink" required>
+            <button type="submit">Generate HTML</button>
+        </form>
+        <h2>Generated HTML Code</h2>
+        <textarea id="generatedCode" rows="20" cols="80"></textarea>
+    </div>
+    <button id="copyButton">Copy to Clipboard</button>
+
+
+    <script src="codescript.js"></script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Slider Generator</title>
+  <link rel="stylesheet" href="catstyles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Product Slider Generator</h1>
+    <form id="productForm">
+      <div id="inputFields">
+        <div class="input-group">
+          <label for="imageURL1">Image URL 1:</label>
+          <input type="url" id="imageURL1" name="imageURL1">
+          <label for="imageFile1">or Choose Image File 1:</label>
+          <input type="file" id="imageFile1" name="imageFile1" accept="image/*">
+          <label for="productName1">Product Name 1:</label>
+          <input type="text" id="productName1" name="productName1" required>
+        </div>
+      </div>
+      <button type="button" id="addMoreButton">Add More</button>
+      <button type="submit">Generate HTML</button>
+    </form>
+    <h2>Generated HTML Code</h2>
+    <textarea id="generatedCode" rows="20" cols="80"></textarea>
+    <button id="copyButton">Copy to Clipboard</button>
+  </div>
+  
+  <script src="catscript.js"></script>
+</body>
+</html>
