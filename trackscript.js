@@ -34,7 +34,7 @@ function calculateDailyTotal() {
     companies.forEach(company => {
         totalReviews += company.dailyReviewCount;
     });
-    const totalEarnings = totalReviews * 1.50;
+    const totalEarnings = totalReviews * 1.60;
     alert(`Total daily earnings: $${totalEarnings.toFixed(2)}`);
 }
 
