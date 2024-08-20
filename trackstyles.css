@@ -33,6 +33,13 @@ h1 {
     border-radius: 4px;
 }
 
+/* Prevent zooming on mobile when interacting with inputs and buttons */
+input, button {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
 .company-list {
     margin-bottom: 20px;
     display: grid;
@@ -144,42 +151,4 @@ button {
     background-color: #28a745;
     width: 0%;
     transition: width 0.3s ease;
-}
-.daily-summary-list {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    margin-top: 20px;
-    width: 100%;
-    max-width: 800px;
-    margin: 20px auto;
-}
-
-.daily-summary-list h2 {
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.company-summary {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 10px;
-}
-
-.company-summary:last-child {
-    border-bottom: none;
-}
-
-.total-pay {
-    margin-top: 20px;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-}
-/* Prevent zooming when clicking on buttons or input fields on mobile devices */
-input, button {
-    font-size: 16px; /* Setting a larger font size to prevent zoom */
-    -webkit-text-size-adjust: 100%; /* Disable text size adjustment on iOS */
-    -ms-text-size-adjust: 100%; /* Disable text size adjustment on IE */
 }
