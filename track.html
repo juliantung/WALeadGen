@@ -9,15 +9,27 @@
 <body>
     <div class="container">
         <h1>Company Review Tracker</h1>
-        <input type="text" id="search-box" onkeyup="searchCompanies()" placeholder="Search for companies..." class="search-box">
+        <input type="text" id="search-box" onkeyup="debounce(searchCompanies, 300)()" placeholder="Search for companies..." class="search-box">
+        <div class="controls">
+            <button onclick="addCompany()" class="button primary">Add Company</button>
+            <button onclick="copyDataToCSV(false)" class="button secondary">Copy Data to CSV</button>
+            <button onclick="resetDailyCounts()" class="button secondary">Reset Daily Counts</button> <!-- Reset Daily Counts Button -->
+            <button onclick="calculateDailyTotal()" class="button secondary">Statistics + Pay</button>
+            <button onclick="listDailyReviews()" class="button secondary">Detailed Stats + Pay</button> <!-- New Button -->
+
+
+        </div>
+        
+       
+        <div class="pay-controls">
+            <input type="number" id="pay-per-review" placeholder="Pay per review" class="input-field">
+            <button onclick="updatePayPerReview()" class="button secondary">Set Pay Per Review</button>
+        </div>
         <div id="company-list" class="company-list">
             <!-- Companies will be listed here -->
         </div>
-        <div class="controls">
-            <button onclick="addCompany()" class="button primary">Add Company</button>
-            <button onclick="calculateDailyTotal()" class="button secondary">Calculate Daily Total</button>
-            <button onclick="copyDataToCSV(false)" class="button secondary">Copy Data to CSV</button>
-            <button onclick="copyDataToCSV(true)" class="button secondary">Copy Data to CSV with Daily Count Reset</button>
+        <div id="daily-summary" class="daily-summary">
+            <!-- Daily summary of total reviews and earnings -->
         </div>
         <div class="csv-controls">
             <textarea id="csv-input" rows="5" placeholder="Paste CSV data here" class="textarea"></textarea>
@@ -27,11 +39,3 @@
     <script src="trackscript.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
