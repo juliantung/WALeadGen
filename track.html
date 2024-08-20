@@ -11,11 +11,11 @@
         <h1>Company Review Tracker</h1>
         <input type="text" id="search-box" onkeyup="debounce(searchCompanies, 300)()" placeholder="Search for companies..." class="search-box">
         <div class="controls">
-            <button onclick="addCompany()" class="button primary">Add Company</button>
+            <!--<button onclick="addCompany()" class="button primary">Add Company</button>-->
             <button onclick="copyDataToCSV(false)" class="button secondary">Copy Data to CSV</button>
-            <button onclick="resetDailyCounts()" class="button secondary">Reset Daily Counts</button> <!-- Reset Daily Counts Button -->
-            <button onclick="calculateDailyTotal()" class="button secondary">Statistics + Pay</button>
-            <button onclick="listDailyReviews()" class="button secondary">Detailed Stats + Pay</button> <!-- New Button -->
+            <button onclick="resetDailyCounts()" class="button secondary">Reset Daily Count</button> <!-- Reset Daily Counts Button -->
+            <button onclick="calculateDailyTotal()" class="button secondary">Your Pay</button>
+            <button onclick="listDailyReviews()" class="button secondary">Full Pay Breakdown</button> <!-- New Button -->
 
 
         </div>
