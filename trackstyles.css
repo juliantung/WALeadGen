@@ -177,3 +177,9 @@ button {
     font-weight: bold;
     text-align: center;
 }
+/* Prevent zooming when clicking on buttons or input fields on mobile devices */
+input, button {
+    font-size: 16px; /* Setting a larger font size to prevent zoom */
+    -webkit-text-size-adjust: 100%; /* Disable text size adjustment on iOS */
+    -ms-text-size-adjust: 100%; /* Disable text size adjustment on IE */
+}
