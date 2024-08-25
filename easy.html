@@ -22,9 +22,11 @@
         </div>
 
         <div class="actions-container">
-            <button onclick="saveData()" class="primary-btn">Save Data</button>
+            <input type="text" id="company-name" placeholder="Enter company name">
+            <button onclick="saveDataAsZip()" class="primary-btn">Save Data as Zip</button>
             <textarea id="data-output" placeholder="Copy this data..." readonly></textarea>
-            <input type="file" id="data-input-file" onchange="loadData(event)">
+            <input type="file" id="data-input-file" accept=".json,.zip" onchange="loadData(event)">
+            <select id="company-selector" onchange="switchCompany()"></select>
         </div>
 
         <div class="output-container" id="output-container">
@@ -33,6 +35,7 @@
         <div id="copy-notification" class="copy-notification hidden">Copied to clipboard!</div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
     <script src="sNew.js"></script>
 </body>
 </html>
