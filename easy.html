@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Separator</title>
+    <link rel="stylesheet" href="sNew.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="input-container">
+            <textarea id="reviews-input" placeholder="Enter reviews here..."></textarea>
+            <input type="text" id="review-link" placeholder="Enter review link here...">
+            <button onclick="generateOutputs()" class="primary-btn">Generate Outputs</button>
+        </div>
+
+        <div class="stats-container">
+            <p>Total Reviews: <span id="total-reviews">0</span></p>
+            <p>Done: <span id="done-count">0</span></p>
+            <p>Undone: <span id="undone-count">0</span></p>
+        </div>
+
+        <div class="actions-container">
+            <button onclick="saveData()" class="primary-btn">Save Data</button>
+            <textarea id="data-output" placeholder="Copy this data..." readonly></textarea>
+            <input type="file" id="data-input-file" onchange="loadData(event)">
+        </div>
+
+        <div class="output-container" id="output-container">
+        </div>
+
+        <div id="copy-notification" class="copy-notification hidden">Copied to clipboard!</div>
+    </div>
+
+    <script src="sNew.js"></script>
+</body>
+</html>
