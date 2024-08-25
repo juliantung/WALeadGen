@@ -1,3 +1,6 @@
+let companiesData = {}; // Store data for multiple companies
+let currentCompany = '';
+
 function generateOutputs() {
     const reviewsInput = document.getElementById('reviews-input').value;
     const reviewLink = document.getElementById('review-link').value;
@@ -85,30 +88,26 @@ function updateStats() {
     document.getElementById('undone-count').textContent = totalReviews - doneReviews;
 }
 
-function saveData() {
-    const outputs = document.getElementsByClassName('output');
-    const data = [];
-    for (let output of outputs) {
-        const review = output.getElementsByTagName('p')[1].textContent;
-        const link = output.getElementsByTagName('a')[0].href;
-        const done = output.classList.contains('done');
-        data.push({ 
-            review_text: review, 
-            review_link: link, 
-            review_status: done ? 'done' : 'not done' 
-        });
-    }
-    const dataStr = JSON.stringify(data, null, 4);
-    const blob = new Blob([dataStr], {type: "application/json"});
-    const url = URL.createObjectURL(blob);
+function saveDataAsZip() {
+    const zip = new JSZip();
 
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "reviews_data.json";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    for (let companyName in companiesData) {
+        const dataStr = JSON.stringify(companiesData[companyName], null, 4);
+        zip.file(`${companyName}_reviews_data.json`, dataStr);
+    }
+
+    zip.generateAsync({ type: "blob" }).then(function (blob) {
+        const today = new Date().toISOString().slice(0, 10); // Get current date in YYYY-MM-DD format
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${today}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    });
 }
 
 function loadData(event) {
@@ -117,6 +116,16 @@ function loadData(event) {
         return;
     }
 
+    if (file.name.endsWith('.zip')) {
+        loadZipData(file);
+    } else if (file.name.endsWith('.json')) {
+        loadJsonData(file);
+    } else {
+        alert('Unsupported file type. Please upload a JSON or ZIP file.');
+    }
+}
+
+function loadJsonData(file) {
     const reader = new FileReader();
     reader.onload = function(event) {
         const dataInput = event.target.result;
@@ -125,51 +134,113 @@ function loadData(event) {
 
         try {
             const data = JSON.parse(dataInput);
-            data.forEach((item, index) => {
-                const outputDiv = document.createElement('div');
-                outputDiv.className = 'output';
-                if (item.review_status === 'done') {
-                    outputDiv.classList.add('done');
-                }
-                outputDiv.id = `output-${index}`;
-
-                const linkElement = document.createElement('p');
-                linkElement.innerHTML = `Click: <a href="${item.review_link}" target="_blank">${item.review_link}</a>`;
-                outputDiv.appendChild(linkElement);
-
-                const reviewElement = document.createElement('p');
-                reviewElement.textContent = item.review_text;
-                outputDiv.appendChild(reviewElement);
-
-                const copyButton = document.createElement('button');
-                copyButton.className = 'copy-btn';
-                copyButton.textContent = 'Copy';
-                copyButton.onclick = () => {
-                    copyToClipboard(`Click: ${item.review_link}\n\n${item.review_text}`);
-                    markAsDone(outputDiv); // Automatically mark as done after copying
-                };
-                outputDiv.appendChild(copyButton);
-
-                const doneButton = document.createElement('button');
-                doneButton.className = 'done-btn';
-                doneButton.textContent = 'Mark as Done';
-                doneButton.onclick = () => markAsDone(outputDiv);
-                outputDiv.appendChild(doneButton);
-
-                const undoneButton = document.createElement('button');
-                undoneButton.className = 'undone-btn';
-                undoneButton.textContent = 'Mark as Undone';
-                undoneButton.onclick = () => markAsUndone(outputDiv);
-                outputDiv.appendChild(undoneButton);
-
-                outputContainer.appendChild(outputDiv);
-            });
-
-            updateStats();
+            const companyName = prompt('Enter the company name for this data:', ''); // Ask for company name
+            if (companyName) {
+                companiesData[companyName] = data; // Store the data under the company name
+                currentCompany = companyName; // Set current company
+                renderCompanyData(); // Render data for the selected company
+                updateCompanySelector(); // Update dropdown with the new company
+            } else {
+                alert('Data not loaded due to missing company name.');
+            }
         } catch (error) {
             console.error('Invalid data format');
         }
     };
 
     reader.readAsText(file);
+}
+
+function loadZipData(file) {
+    const zip = new JSZip();
+
+    zip.loadAsync(file).then(function(zip) {
+        const filePromises = [];
+        zip.forEach((relativePath, zipEntry) => {
+            if (zipEntry.name.endsWith('.json')) {
+                filePromises.push(
+                    zipEntry.async("string").then((fileData) => {
+                        const companyName = zipEntry.name.replace('_reviews_data.json', '');
+                        companiesData[companyName] = JSON.parse(fileData);
+                    })
+                );
+            }
+        });
+
+        Promise.all(filePromises).then(() => {
+            updateCompanySelector();
+            if (Object.keys(companiesData).length > 0) {
+                currentCompany = Object.keys(companiesData)[0];
+                renderCompanyData();
+            }
+        });
+    }, function(error) {
+        console.error("Failed to read zip file: ", error);
+    });
+}
+
+function updateCompanySelector() {
+    const selector = document.getElementById('company-selector');
+    selector.innerHTML = '';
+    for (let companyName in companiesData) {
+        const option = document.createElement('option');
+        option.value = companyName;
+        option.textContent = companyName;
+        selector.appendChild(option);
+    }
+    selector.value = currentCompany;
+}
+
+function switchCompany() {
+    const selector = document.getElementById('company-selector');
+    currentCompany = selector.value;
+    renderCompanyData();
+}
+
+function renderCompanyData() {
+    const data = companiesData[currentCompany];
+    const outputContainer = document.getElementById('output-container');
+    outputContainer.innerHTML = '';
+
+    data.forEach((item, index) => {
+        const outputDiv = document.createElement('div');
+        outputDiv.className = 'output';
+        if (item.review_status === 'done') {
+            outputDiv.classList.add('done');
+        }
+        outputDiv.id = `output-${index}`;
+
+        const linkElement = document.createElement('p');
+        linkElement.innerHTML = `Click: <a href="${item.review_link}" target="_blank">${item.review_link}</a>`;
+        outputDiv.appendChild(linkElement);
+
+        const reviewElement = document.createElement('p');
+        reviewElement.textContent = item.review_text;
+        outputDiv.appendChild(reviewElement);
+
+        const copyButton = document.createElement('button');
+        copyButton.className = 'copy-btn';
+        copyButton.textContent = 'Copy';
+        copyButton.onclick = () => {
+            copyToClipboard(`Click: ${item.review_link}\n\n${item.review_text}`);
+            markAsDone(outputDiv); // Automatically mark as done after copying
+        };
+        outputDiv.appendChild(copyButton);
+
+        const doneButton = document.createElement('button');
+        doneButton.className = 'done-btn';
+        doneButton.textContent = 'Mark as Done';
+        doneButton.onclick = () => markAsDone(outputDiv);
+        outputDiv.appendChild(doneButton);
+
+        const undoneButton = document.createElement('button');
+        undoneButton.className = 'undone-btn';
+        undoneButton.textContent = 'Mark as Undone';
+        undoneButton.onclick = () => markAsUndone(outputDiv);
+        outputDiv.appendChild(undoneButton);
+
+        outputContainer.appendChild(outputDiv);
+    });
+
+    updateStats();
 }
