@@ -89,10 +89,28 @@ function updateStats() {
 }
 
 function saveDataAsJson() {
-    if (!currentCompany || !companiesData[currentCompany]) {
-        alert('No company data to save.');
+    const companyName = document.getElementById('company-name').value.trim();
+
+    if (!companyName) {
+        alert('Please enter a company name.');
         return;
     }
+
+    currentCompany = companyName;
+    companiesData[currentCompany] = [];
+
+    const outputs = document.querySelectorAll('.output');
+    outputs.forEach((output, index) => {
+        const reviewText = output.querySelector('p:nth-child(2)').textContent;
+        const reviewLink = output.querySelector('a').href;
+        const isDone = output.classList.contains('done');
+
+        companiesData[currentCompany].push({
+            review_text: reviewText,
+            review_link: reviewLink,
+            review_status: isDone ? 'done' : 'undone'
+        });
+    });
 
     const dataStr = JSON.stringify(companiesData[currentCompany], null, 4);
     const blob = new Blob([dataStr], { type: "application/json" });
@@ -153,34 +171,6 @@ function loadJsonData(file) {
     };
 
     reader.readAsText(file);
-}
-
-function loadZipData(file) {
-    const zip = new JSZip();
-
-    zip.loadAsync(file).then(function(zip) {
-        const filePromises = [];
-        zip.forEach((relativePath, zipEntry) => {
-            if (zipEntry.name.endsWith('.json')) {
-                filePromises.push(
-                    zipEntry.async("string").then((fileData) => {
-                        const companyName = zipEntry.name.replace('_reviews_data.json', '');
-                        companiesData[companyName] = JSON.parse(fileData);
-                    })
-                );
-            }
-        });
-
-        Promise.all(filePromises).then(() => {
-            updateCompanySelector();
-            if (Object.keys(companiesData).length > 0) {
-                currentCompany = Object.keys(companiesData)[0];
-                renderCompanyData();
-            }
-        });
-    }, function(error) {
-        console.error("Failed to read zip file: ", error);
-    });
 }
 
 function updateCompanySelector() {
