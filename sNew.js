@@ -96,16 +96,22 @@ function saveDataAsJson() {
 
     const dataStr = JSON.stringify(companiesData[currentCompany], null, 4);
     const blob = new Blob([dataStr], { type: "application/json" });
-    const today = new Date().toISOString().slice(0, 10); // Get current date in YYYY-MM-DD format
     const url = URL.createObjectURL(blob);
+
+    const today = new Date().toISOString().slice(0, 10); // Get current date in YYYY-MM-DD format
+    const fileName = `${currentCompany}_${today}.json`;
 
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${currentCompany}_${today}.json`;
+    a.download = fileName;
+
+    // Programmatically click the link to trigger the download
     document.body.appendChild(a);
     a.click();
-    document.body.removeChild(a);
+
+    // Clean up by revoking the object URL and removing the link
     URL.revokeObjectURL(url);
+    document.body.removeChild(a);
 }
 
 function loadData(event) {
