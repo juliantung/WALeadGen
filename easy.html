@@ -23,7 +23,7 @@
 
         <div class="actions-container">
             <input type="text" id="company-name" placeholder="Enter company name">
-            <button onclick="saveDataAsZip()" class="primary-btn">Save Data as Zip</button>
+            <button onclick="saveDataAsJson()" class="primary-btn">Save Data as JSON</button>
             <textarea id="data-output" placeholder="Copy this data..." readonly></textarea>
             <input type="file" id="data-input-file" accept=".json,.zip" onchange="loadData(event)">
             <select id="company-selector" onchange="switchCompany()"></select>
