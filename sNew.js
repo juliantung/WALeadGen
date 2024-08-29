@@ -88,48 +88,26 @@ function updateStats() {
     document.getElementById('undone-count').textContent = totalReviews - doneReviews;
 }
 
-function saveDataAsJson() {
-    const companyName = document.getElementById('company-name').value.trim();
+function saveDataAsZip() {
+    const zip = new JSZip();
 
-    if (!companyName) {
-        alert('Please enter a company name.');
-        return;
+    for (let companyName in companiesData) {
+        const dataStr = JSON.stringify(companiesData[companyName], null, 4);
+        zip.file(`${companyName}_reviews_data.json`, dataStr);
     }
 
-    currentCompany = companyName;
-    companiesData[currentCompany] = [];
+    zip.generateAsync({ type: "blob" }).then(function (blob) {
+        const today = new Date().toISOString().slice(0, 10); // Get current date in YYYY-MM-DD format
+        const url = URL.createObjectURL(blob);
 
-    const outputs = document.querySelectorAll('.output');
-    outputs.forEach((output, index) => {
-        const reviewText = output.querySelector('p:nth-child(2)').textContent;
-        const reviewLink = output.querySelector('a').href;
-        const isDone = output.classList.contains('done');
-
-        companiesData[currentCompany].push({
-            review_text: reviewText,
-            review_link: reviewLink,
-            review_status: isDone ? 'done' : 'undone'
-        });
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${today}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     });
-
-    const dataStr = JSON.stringify(companiesData[currentCompany], null, 4);
-    const blob = new Blob([dataStr], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-
-    const today = new Date().toISOString().slice(0, 10); // Get current date in YYYY-MM-DD format
-    const fileName = `${currentCompany}_${today}.json`;
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = fileName;
-
-    // Programmatically click the link to trigger the download
-    document.body.appendChild(a);
-    a.click();
-
-    // Clean up by revoking the object URL and removing the link
-    URL.revokeObjectURL(url);
-    document.body.removeChild(a);
 }
 
 function loadData(event) {
@@ -171,6 +149,34 @@ function loadJsonData(file) {
     };
 
     reader.readAsText(file);
+}
+
+function loadZipData(file) {
+    const zip = new JSZip();
+
+    zip.loadAsync(file).then(function(zip) {
+        const filePromises = [];
+        zip.forEach((relativePath, zipEntry) => {
+            if (zipEntry.name.endsWith('.json')) {
+                filePromises.push(
+                    zipEntry.async("string").then((fileData) => {
+                        const companyName = zipEntry.name.replace('_reviews_data.json', '');
+                        companiesData[companyName] = JSON.parse(fileData);
+                    })
+                );
+            }
+        });
+
+        Promise.all(filePromises).then(() => {
+            updateCompanySelector();
+            if (Object.keys(companiesData).length > 0) {
+                currentCompany = Object.keys(companiesData)[0];
+                renderCompanyData();
+            }
+        });
+    }, function(error) {
+        console.error("Failed to read zip file: ", error);
+    });
 }
 
 function updateCompanySelector() {
