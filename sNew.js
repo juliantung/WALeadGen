@@ -88,26 +88,24 @@ function updateStats() {
     document.getElementById('undone-count').textContent = totalReviews - doneReviews;
 }
 
-function saveDataAsZip() {
-    const zip = new JSZip();
-
-    for (let companyName in companiesData) {
-        const dataStr = JSON.stringify(companiesData[companyName], null, 4);
-        zip.file(`${companyName}_reviews_data.json`, dataStr);
+function saveDataAsJson() {
+    if (!currentCompany || !companiesData[currentCompany]) {
+        alert('No company data to save.');
+        return;
     }
 
-    zip.generateAsync({ type: "blob" }).then(function (blob) {
-        const today = new Date().toISOString().slice(0, 10); // Get current date in YYYY-MM-DD format
-        const url = URL.createObjectURL(blob);
+    const dataStr = JSON.stringify(companiesData[currentCompany], null, 4);
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const today = new Date().toISOString().slice(0, 10); // Get current date in YYYY-MM-DD format
+    const url = URL.createObjectURL(blob);
 
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${today}.zip`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    });
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${currentCompany}_${today}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
 
 function loadData(event) {
