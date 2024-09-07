@@ -9,33 +9,25 @@
 <body>
 
     <div class="container">
+        <!-- Actions buttons on top -->
+        <div class="actions-container">
+            <button class="action-btn" onclick="generateOutputs()">Generate</button>
+            <button class="action-btn" onclick="downloadJSON()">Download JSON</button>
+            <input type="file" id="file-input" accept=".json" onchange="loadFile(event)" />
+        </div>
+
         <div class="input-container">
             <textarea id="reviews-input" placeholder="Enter reviews here..."></textarea>
-            <input type="text" id="review-link" placeholder="Enter review link here...">
-            <button onclick="generateOutputs()" class="primary-btn">Generate Outputs</button>
+            <input type="text" id="review-link" placeholder="Enter review link...">
         </div>
 
-        <div class="stats-container">
-            <p>Total Reviews: <span id="total-reviews">0</span></p>
-            <p>Done: <span id="done-count">0</span></p>
-            <p>Undone: <span id="undone-count">0</span></p>
-        </div>
+        <div class="output-container" id="output-container"></div>
 
-        <div class="actions-container">
-            <input type="text" id="company-name" placeholder="Enter company name">
-            <button onclick="saveDataAsJson()" class="primary-btn">Save Data as JSON</button>
-            <textarea id="data-output" placeholder="Copy this data..." readonly></textarea>
-            <input type="file" id="data-input-file" accept=".json,.zip" onchange="loadData(event)">
-            <select id="company-selector" onchange="switchCompany()"></select>
+        <div class="stats-container" id="stats-container">
+            Total Reviews: 0 | Done Reviews: 0
         </div>
-
-        <div class="output-container" id="output-container">
-        </div>
-
-        <div id="copy-notification" class="copy-notification hidden">Copied to clipboard!</div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
     <script src="sNew.js"></script> <!-- Link to the external JavaScript file -->
 </body>
 </html>
