@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Duplicate Review Checker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        #container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            resize: vertical;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #output {
+            margin-top: 20px;
+        }
+
+        #outputArea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .button-group {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #copyButton {
+            background-color: #008CBA;
+        }
+
+        #copyButton:hover {
+            background-color: #007bb5;
+        }
+
+        #reviewCount {
+            font-size: 18px;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <h1>Duplicate Review Checker</h1>
+
+        <textarea id="inputReviews" placeholder="Paste your reviews here..."></textarea>
+
+        <div class="button-group">
+            <button onclick="checkDuplicates()">Check for Duplicates</button>
+            <button id="copyButton" onclick="copyOutput()">Copy Output</button>
+        </div>
+
+        <div id="output">
+            <textarea id="outputArea" readonly placeholder="Your unique reviews will appear here..."></textarea>
+            <div id="reviewCount"></div>
+        </div>
+    </div>
+
+    <script>
+        function checkDuplicates() {
+            // Get the input value
+            const input = document.getElementById('inputReviews').value;
+
+            // Remove any existing quotation marks before splitting
+            const sanitizedInput = input.replace(/["]/g, '');
+
+            // Split input by newlines to get individual reviews, trimming whitespace
+            const reviews = sanitizedInput.split('\n').map(review => review.trim()).filter(review => review !== "");
+
+            // Use a Set to track unique reviews
+            const uniqueReviews = new Set(reviews);
+
+            // Format each review with backticks and join them with new lines
+            const formattedReviews = [...uniqueReviews].map(review => `\`${review}\``).join('\n\n');
+
+            // Display the unique, formatted reviews
+            document.getElementById('outputArea').value = formattedReviews;
+
+            // Update the review count
+            document.getElementById('reviewCount').textContent = `Total Reviews: ${uniqueReviews.size}`;
+        }
+
+        function copyOutput() {
+            const outputArea = document.getElementById('outputArea');
+            outputArea.select();
+            outputArea.setSelectionRange(0, 99999); // For mobile devices
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    alert('Output copied to clipboard!');
+                } else {
+                    alert('Failed to copy output.');
+                }
+            } catch (err) {
+                alert('Oops, unable to copy.');
+            }
+        }
+    </script>
+
+</body>
+</html>
